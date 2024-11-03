@@ -44,6 +44,12 @@
               }
           }
       notify: reload nginx
+    - name: Create files based on file_names variable
+      copy:
+        dest: "/var/www/html/{{ item }}"
+        content: "This is the content for {{ item }}"
+      loop: "{{ file_names }}"
+
   handlers:
     - name: reload nginx
       service:
