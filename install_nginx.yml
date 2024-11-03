@@ -5,7 +5,6 @@
     - name: Add target_host to inventory
       add_host:
         name: "{{ target_host }}"
-        ansible_user: "ubuntu"  # Ensure this matches the user for SSH
 
 - name: Install and configure NGINX on target
   hosts: "{{ target_host }}"
