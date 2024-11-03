@@ -1,29 +1,48 @@
 ---
-- name: Install and Configure Nginx
+- name: Install and configure NGINX
   hosts: all
   become: yes
+
   tasks:
-    - name: Ensure Nginx is installed
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install NGINX
       apt:
         name: nginx
         state: present
-        update_cache: yes
 
-    - name: Start and enable Nginx service
-      systemd:
+    - name: Start and enable NGINX service
+      service:
         name: nginx
         state: started
         enabled: yes
 
-    - name: Copy custom Nginx configuration
-      template:
-        src: nginx.conf.j2
-        dest: /etc/nginx/nginx.conf
-      notify:
-        - Restart Nginx
+    - name: Open port 80 in the firewall
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Ensure custom NGINX configuration (optional)
+      copy:
+        dest: /etc/nginx/sites-available/default
+        content: |
+          server {
+              listen 80 default_server;
+              listen [::]:80 default_server;
+              server_name _;
+              root /var/www/html;
+              index index.html index.htm index.nginx-debian.html;
+              location / {
+                  try_files $uri $uri/ =404;
+              }
+          }
+      notify: reload nginx
 
   handlers:
-    - name: Restart Nginx
-      systemd:
+    - name: reload nginx
+      service:
         name: nginx
-        state: restarted
+        state: reloaded
