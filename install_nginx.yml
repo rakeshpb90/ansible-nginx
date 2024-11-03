@@ -1,6 +1,6 @@
 ---
 - name: Install and configure NGINX
-  hosts: "{{ target_host }}"
+  hosts: "{{ target_host | default('dummy-host') }}"
   become: yes
   tasks:
     - name: Update apt package index
