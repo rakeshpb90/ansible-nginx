@@ -11,6 +11,9 @@
   gather_facts: no 
   become: yes
   tasks:
+    - name: Pause for 60 seconds
+      pause:
+        seconds: 60
     - name: Update apt package index
       apt:
         update_cache: yes
