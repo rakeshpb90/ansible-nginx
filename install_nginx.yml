@@ -23,11 +23,6 @@
         name: nginx
         state: started
         enabled: yes
-    - name: Open port 80 in the firewall
-      ufw:
-        rule: allow
-        port: '80'
-        proto: tcp
     - name: Ensure custom NGINX configuration (optional)
       copy:
         dest: /etc/nginx/sites-available/default
