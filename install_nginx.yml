@@ -1,5 +1,5 @@
 ---
-- name: Add target host dynamically
+- name: Add target host dynamically tes
   hosts: localhost
   tasks:
     - name: Add target_host to inventory
